@@ -1,0 +1,36 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+table{
+    border: 2rem solid rgb(88, 137, 57);
+    position: absolute;
+    left: 28rem;
+    top: 4rem;
+    border-collapse: collapse;
+    z-index: 0;
+}
+
+td{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.claro{
+    background-color: rgb(171,213,90);
+}
+
+.oscuro{
+    background-color: rgb(163,207,83);
+}
+
+#serpiente{
+    background-color: rgb(112, 0, 97);
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    left: 36rem;
+    top: 19.5rem;
+    z-index: 1;
+}
