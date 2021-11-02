@@ -1,4 +1,5 @@
 let bandera = false;
+let coordenada = [0,0];
 $("<table></table>",{"id": "tabla"}).appendTo("body");
 $(document).ready(function(){
     for(let i = 0; i < 19; i++){
@@ -16,47 +17,64 @@ $(document).ready(function(){
     $("<td></td>",{"id": "serpiente"}).appendTo("body");
     serpiente = $("#serpiente")[0];
 
+    function mostrarAlerta(a, b) {
+        if (parseFloat(a)==b && !bandera) {
+            bandera = true;
+            $("<h1>GAME OVER</h1>",{"id": "titulo"}).appendTo("body");
+            $("#serpiente").hide();
+        }
+    }
+
     $(window).keydown(function(event){
-        let top;
-        let left;
+        let top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
+        let left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
         switch (event.keyCode) {
             case 37: //tecla izquierda
-                left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
                 if(parseFloat(left) > 480){
                     serpiente.style.setProperty("left","" + (parseFloat(left) - 24) + "px");
+                    esPunto(left, top);
                 }
+                mostrarAlerta(left,480);
                 break;
             case 38: //tecla arriba
                 top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
                 if(parseFloat(top) > 96){
                     serpiente.style.setProperty("top","" + (parseFloat(top) - 24) + "px");
                 }
+                mostrarAlerta(top,96);
                 break;
             case 39: //tecla derecha
                 left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
                 if(parseFloat(left) < 912){
                     serpiente.style.setProperty("left","" + (parseFloat(left) + 24) + "px");
                 }
+                mostrarAlerta(left,912);
                 break;
             case 40: //tecla abajo
                 top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
                 if(parseFloat(top) < 528){
                     serpiente.style.setProperty("top","" + (parseFloat(top) + 24) + "px");
                 }
+                mostrarAlerta(top,528);
                 break;
             default:
                 break;
         }
     })
+    
     punto();
+
     function punto() {
         let casilla = Math.floor(Math.random()*361);
         let celda = $("#tabla").find("tr").find("td")[casilla];
         $("<img src='img/punto.png'>",{"id": "imagen"}).appendTo(celda);
-        console.log($("#tabla").find("tr").find("td")[casilla]);
+        coordenada[0] = celda.offsetTop;
+        coordenada[1] = celda.offsetLeft;
     }
 
+    function esPunto(x, y){
 
-    
+    }
+
 });
 
