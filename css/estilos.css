@@ -17,6 +17,11 @@ td{
     height: 1.5rem;
 }
 
+td{
+    text-align: center;
+    vertical-align: auto;
+}
+
 .claro{
     background-color: rgb(171,213,90);
 }

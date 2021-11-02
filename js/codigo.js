@@ -20,12 +20,6 @@ $(document).ready(function(){
         let top;
         let left;
         switch (event.keyCode) {
-            case 40: //tecla abajo
-                top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
-                if(parseFloat(top) < 528){
-                    serpiente.style.setProperty("top","" + (parseFloat(top) + 24) + "px");
-                }
-                break;
             case 37: //tecla izquierda
                 left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
                 if(parseFloat(left) > 480){
@@ -44,9 +38,25 @@ $(document).ready(function(){
                     serpiente.style.setProperty("left","" + (parseFloat(left) + 24) + "px");
                 }
                 break;
+            case 40: //tecla abajo
+                top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
+                if(parseFloat(top) < 528){
+                    serpiente.style.setProperty("top","" + (parseFloat(top) + 24) + "px");
+                }
+                break;
             default:
                 break;
         }
     })
+    punto();
+    function punto() {
+        let casilla = Math.floor(Math.random()*361);
+        let celda = $("#tabla").find("tr").find("td")[casilla];
+        $("<img src='img/punto.png'>",{"id": "imagen"}).appendTo(celda);
+        console.log($("#tabla").find("tr").find("td")[casilla]);
+    }
+
+
+    
 });
 
