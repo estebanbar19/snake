@@ -1,5 +1,6 @@
 let bandera = false;
 let coordenada = [0,0];
+var celda;
 $("<table></table>",{"id": "tabla"}).appendTo("body");
 $(document).ready(function(){
     for(let i = 0; i < 19; i++){
@@ -26,13 +27,13 @@ $(document).ready(function(){
     }
 
     $(window).keydown(function(event){
-        let top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
-        let left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
+        let top;
+        let left;
         switch (event.keyCode) {
             case 37: //tecla izquierda
+                left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
                 if(parseFloat(left) > 480){
                     serpiente.style.setProperty("left","" + (parseFloat(left) - 24) + "px");
-                    esPunto(left, top);
                 }
                 mostrarAlerta(left,480);
                 break;
@@ -60,20 +61,30 @@ $(document).ready(function(){
             default:
                 break;
         }
+        esPunto();
     })
     
     punto();
 
     function punto() {
         let casilla = Math.floor(Math.random()*361);
-        let celda = $("#tabla").find("tr").find("td")[casilla];
+        celda = $("#tabla").find("tr").find("td")[casilla];
         $("<img src='img/punto.png'>",{"id": "imagen"}).appendTo(celda);
-        coordenada[0] = celda.offsetTop;
-        coordenada[1] = celda.offsetLeft;
     }
 
-    function esPunto(x, y){
-
+    function esPunto(){
+        let topSerp = parseInt(window.getComputedStyle(serpiente, null).getPropertyValue("top").replace("px",""))-parseInt(window.getComputedStyle(document.getElementById("tabla"), null).getPropertyValue("top").replace("px",""))-(parseInt(window.getComputedStyle(document.getElementById("tabla"), null).getPropertyValue("border").substr(0,2))/2);
+        let leftSerp = parseInt(window.getComputedStyle(serpiente, null).getPropertyValue("left").replace("px",""))-parseInt(window.getComputedStyle(document.getElementById("tabla"), null).getPropertyValue("left").replace("px",""))-(parseInt(window.getComputedStyle(document.getElementById("tabla"), null).getPropertyValue("border").substr(0,2))/2);
+        if(topSerp == 16){
+            topSerp = 0;
+        }
+        if(leftSerp == 16){
+            leftSerp = 0;
+        }
+        if(celda.offsetLeft == leftSerp && celda.offsetTop == topSerp){
+            celda.innerHTML = "";
+            punto();
+        }
     }
 
 });
