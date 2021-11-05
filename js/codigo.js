@@ -24,10 +24,11 @@ $(document).ready(function(){
             $("#serpiente").hide();
         }
     }
-
+    let top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
+    let left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
     $(window).keydown(function(event){
-        let top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
-        let left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
+        top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
+        left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
         switch (event.keyCode) {
             case 37: //tecla izquierda
                 if(parseFloat(left) > 480){
@@ -60,6 +61,7 @@ $(document).ready(function(){
             default:
                 break;
         }
+        crecimiento();
     })
     
     punto();
@@ -70,10 +72,21 @@ $(document).ready(function(){
         $("<img src='img/punto.png'>",{"id": "imagen"}).appendTo(celda);
         coordenada[0] = celda.offsetTop;
         coordenada[1] = celda.offsetLeft;
+        console.log(coordenada[0]+" "+coordenada[1]);
     }
 
     function esPunto(x, y){
+        
+    }
 
+    function crecimiento(){
+        
+        top = parseInt(window.getComputedStyle(serpiente, null).getPropertyValue("top").replace("px",""))-parseInt(window.getComputedStyle(document.getElementById("tabla"), null).getPropertyValue("top").replace("px",""));
+        left = parseInt(window.getComputedStyle(serpiente, null).getPropertyValue("left").replace("px",""))-parseInt(window.getComputedStyle(document.getElementById("tabla"), null).getPropertyValue("left").replace("px",""));
+        console.log(top+" "+left);
+        if(false){
+
+        }
     }
 
 });
