@@ -25,46 +25,75 @@ $(document).ready(function(){
             $("#serpiente").hide();
         }
     }
+
+
     let top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
     let left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
+    let movimientoArriba, movimientoAbajo, movimientoIzquierda, movimientoDerecha;
+    var keyAux;
     $(window).keydown(function(event){
         let top;
         let left;
-        switch (event.keyCode) {
-            case 37: //tecla izquierda
-                left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
-                if(parseFloat(left) > 480){
-                    serpiente.style.setProperty("left","" + (parseFloat(left) - 24) + "px");
-                }
-                mostrarAlerta(left,480);
-                break;
-            case 38: //tecla arriba
-                top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
-                if(parseFloat(top) > 96){
-                    serpiente.style.setProperty("top","" + (parseFloat(top) - 24) + "px");
-                }
-                mostrarAlerta(top,96);
-                break;
-            case 39: //tecla derecha
-                left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
-                if(parseFloat(left) < 912){
-                    serpiente.style.setProperty("left","" + (parseFloat(left) + 24) + "px");
-                }
-                mostrarAlerta(left,912);
-                break;
-            case 40: //tecla abajo
-                top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
-                if(parseFloat(top) < 528){
-                    serpiente.style.setProperty("top","" + (parseFloat(top) + 24) + "px");
-                }
-                mostrarAlerta(top,528);
-                break;
-            default:
-                break;
+        console.log(event.keyCode);
+        keyAux = event.keyCode;
+        // event.keyCode != 27  ||
+        // while((event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) && $("#serpiente").is(":visible")){
+        //     setTimeout(function(){mover(keyAux)},10000);
+        //     esPunto();
+        // }
+
+        if(event.keyCode==37 ){
+            if(movimientoIzquierda == null){
+                movimientoIzquierda = setInterval(function(){
+                    mover(keyAux);
+                    esPunto()
+                },200);
+            };
+            clearInterval(movimientoArriba);
+            clearInterval(movimientoAbajo);
+            clearInterval(movimientoDerecha);
+            movimientoArriba = null;
+            movimientoAbajo = null;
+            movimientoDerecha = null;
         }
-        esPunto();
+
+        if(event.keyCode==38){
+            if(movimientoArriba == null){
+                movimientoArriba = setInterval(function(){mover(keyAux);esPunto()},200);
+            }
+            clearInterval(movimientoIzquierda);
+            clearInterval(movimientoAbajo);
+            clearInterval(movimientoDerecha);
+            movimientoIzquierda = null;
+            movimientoAbajo = null;
+            movimientoDerecha = null;
+        }
+        
+        if(event.keyCode==39){
+            if(movimientoDerecha == null){
+                movimientoDerecha = setInterval(function(){mover(keyAux);esPunto()},200);
+            }
+            clearInterval(movimientoArriba);
+            clearInterval(movimientoAbajo);
+            clearInterval(movimientoIzquierda);
+            movimientoArriba = null;
+            movimientoAbajo = null;
+            movimientoIzquierda = null;
+        }
+
+        if(event.keyCode==40){
+            if(movimientoAbajo == null){
+                movimientoAbajo = setInterval(function(){mover(keyAux);esPunto()},200);
+            }
+            clearInterval(movimientoArriba);
+            clearInterval(movimientoIzquierda);
+            clearInterval(movimientoDerecha);
+            movimientoArriba = null;
+            movimientoIzquierda = null;
+            movimientoDerecha = null;
+        }
     })
-    
+
     punto();
 
     function punto() {
@@ -88,5 +117,55 @@ $(document).ready(function(){
         }
     }
 
-});
+    function mover(key){
+        switch (key) {
+            case 37: //tecla izquierda
+                left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
+                moverSnake("left",left,-24,480,"mayor");
+                mostrarAlerta(left,480);
+            break;
+            case 38: //tecla arriba
+                top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
+                moverSnake("top",top,-24,96,"mayor");
+                mostrarAlerta(top,96);
+                break;
+            case 39: //tecla derecha
+                left = window.getComputedStyle(serpiente, null).getPropertyValue("left");
+                moverSnake("left",left,+24,912,"menor");
+                mostrarAlerta(left,912);
+                break;
+            case 40: //tecla abajo
+                top = window.getComputedStyle(serpiente, null).getPropertyValue("top");
+                moverSnake("top",top,+24,528,"menor");
+                mostrarAlerta(top,528);
+                break;
+            default:
+            break;
+        }
+    }
 
+    function moverSnake(string, object, pxs, limite, operador){
+        switch(operador){
+            case "menor":
+                if(parseFloat(object) < limite){
+                    serpiente.style.setProperty(string,"" + (parseFloat(object) + pxs) + "px");
+                }else{
+                    clearInterval(movimientoArriba);
+                    clearInterval(movimientoIzquierda);
+                    clearInterval(movimientoDerecha);
+                    clearInterval(movimientoAbajo);
+                }
+            break;
+            case "mayor":
+                if(parseFloat(object) > limite){
+                    serpiente.style.setProperty(string,"" + (parseFloat(object) + pxs) + "px");
+                }else{
+                    clearInterval(movimientoArriba);
+                    clearInterval(movimientoIzquierda);
+                    clearInterval(movimientoDerecha);
+                    clearInterval(movimientoAbajo);
+                }
+            break;
+        }
+    }
+});
